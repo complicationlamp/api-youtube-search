@@ -1,4 +1,4 @@
-const youtubeApiEndpoint = "https://www.googleapis.com/youtube/v3/search"
+const youtubeApiEndpoint = "https://www.googleapis.com/youtube/v3/search";
 
 // sudo code to help guide me along//
 
@@ -7,10 +7,13 @@ const youtubeApiEndpoint = "https://www.googleapis.com/youtube/v3/search"
 	// jQuery $.getJSON(the endpoint, query object, and callback)
 
 function getDataFromApi(searchThing, callback) {
+  console.log('ballll');
 	const query = {
 		q: `${searchThing} in:name`,
-		per_page: 5
-	}
+		per_page: 5,
+		part: 'snippet',
+		key: 'AIzaSyCseI7YzFnlGYraz6aLrUokJrvkXNLh2WE'
+	};
 	$.getJSON(youtubeApiEndpoint, query, callback);
 }
 
@@ -21,10 +24,12 @@ function getDataFromApi(searchThing, callback) {
 	//
 
 function renderResults(result) {
+  console.log('render');
 	return `
 		<div>
 			<h2>
-			a class="js-result-name" href="${result.html_url}" target="_blank">${result.name}</a> by <a class="js-user-name" href="${result.owner.html_url}" target="_blank">${result.owner.login}</a></h2>
+			<a class="js-result-name" href="${result.html_url}" target="_blank">${result.name}</a>
+			</h2>
 		</div>
 	`;
 }
@@ -34,8 +39,8 @@ function renderResults(result) {
 	// now a js tag so that it'll populate the div}
 
 function displayYoutubeSearchData(data) {
-	const results = data.items.map((item, index) => renderResult(item));
-	$('js-search-results').html(results);
+	const results = data.items.map((item, index) => renderResults(item));
+	$('.js-search-results').html(results);
 }
 
 //function handel the submit button () {
@@ -48,8 +53,9 @@ function displayYoutubeSearchData(data) {
 //	})}
 
 function watchSubmit() {
-	$('js-search-form').submit(event => {
+	$('.js-search-form').submit(event => {
 		event.preventDefault();
+		console.log('stuff');
 		const queryTarget = $(event.currentTarget).find('.js-query');
 		const query = queryTarget.val();
 		queryTarget.val("");
