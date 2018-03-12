@@ -7,7 +7,6 @@ const youtubeApiEndpoint = "https://www.googleapis.com/youtube/v3/search";
 	// jQuery $.getJSON(the endpoint, query object, and callback)
 
 function getDataFromApi(searchThing, callback) {
-  console.log('ballll');
 	const query = {
 		q: `${searchThing} in:name`,
 		per_page: 5,
@@ -24,11 +23,14 @@ function getDataFromApi(searchThing, callback) {
 	//
 
 function renderResults(result) {
-  console.log('render');
+  console.log(result);
+  const youtubeLink = `https://www.youtube.com/watch?v=${result.id.videoId}`;
 	return `
 		<div>
 			<h2>
-			<a class="js-result-name" href="${result.html_url}" target="_blank">${result.name}</a>
+			<img src="${result.snippet.thumbnails.default.url}" width="200" height="200">
+			<br/>
+			<a class="js-result-name" href="${youtubeLink}" target="_blank">${result.snippet.title}</a>
 			</h2>
 		</div>
 	`;
@@ -55,7 +57,6 @@ function displayYoutubeSearchData(data) {
 function watchSubmit() {
 	$('.js-search-form').submit(event => {
 		event.preventDefault();
-		console.log('stuff');
 		const queryTarget = $(event.currentTarget).find('.js-query');
 		const query = queryTarget.val();
 		queryTarget.val("");
